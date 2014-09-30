@@ -9,27 +9,23 @@ import java.io.PrintWriter;
 
 
 /**
- * Load/save data in a local file. 
+ * Extend the in-memory DAO implementation - Make sure that the data is 
+ * saved in a local file. 
  */
-public class TrainCompanyLocalFileDAO implements TrainCompanyDAO {
+public class TrainCompanyLocalFileDAO extends TrainCompanyInMemoryDAO {
 
 	
-	private String filename;
+	private String dataFilename;
 	
-	public TrainCompanyLocalFileDAO(String filename) throws IOException {
-		this.filename = filename;
-		loadData(this.filename);
+	public TrainCompanyLocalFileDAO(String dataFilename) throws IOException {
+		this.dataFilename = dataFilename;
+		loadData(this.dataFilename);
 	}
 	
 	
 	@Override
 	public TrainCompany createInstance(String name) {
 		return createInstance(name, true);
-	}
-
-	@Override
-	public TrainCompany getInstance(String name) {
-		return null;
 	}
 	
 	
@@ -59,7 +55,7 @@ public class TrainCompanyLocalFileDAO implements TrainCompanyDAO {
 	 * Save the given train company in the specified file. 
 	 */
 	private void saveData(String filename, TrainCompany trainCompany) throws IOException{
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("myfile.txt", true)));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(this.dataFilename, true)));
 	    out.println(trainCompany.getName());
 	    out.close();
 	}
@@ -75,15 +71,12 @@ public class TrainCompanyLocalFileDAO implements TrainCompanyDAO {
 	 * See the loadData(String filename) to understand why this helper is useful.
 	 */
 	private TrainCompany createInstance(String name, boolean shouldPersist) {
-		// TODO: Verify that the name is valid, and that it is not taken
-		
-		// TODO: Create the instance ...
-		TrainCompany company = null;
+		TrainCompany company = super.createInstance(name);
 		
 		// Persist the data, if necessary.
 		if(shouldPersist){
 			try {
-				saveData(this.filename, company);
+				saveData(this.dataFilename, company);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
