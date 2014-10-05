@@ -1,26 +1,43 @@
 package csc301;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrainCompanyInMemoryDAO implements TrainCompanyDAO {
+	
+	private static Map<String, TrainCompany> nameToTrainCompany = new HashMap<String, TrainCompany>();
 
 	@Override
 	public TrainCompany createInstance(String name) {
-		// TODO: Verify that the name is valid, and is not taken already ...
-		
+		name = normalizeName(name);
 		TrainCompany company = instantiateTrainCopmany(name);
-		
-		// TODO: Save a reference to this instance somewhere (so that getInstance will be able to return it) ...
-		
+		nameToTrainCompany.put(name, company);
 		return company;
 	}
 
 	
 	@Override
 	public TrainCompany getInstance(String name) {
-		return null;
+		return nameToTrainCompany.get(name);
 	}
 
+	
+	/**
+	 * @throws IllegalArgumentException If the name is invalid, or taken.
+	 * @return A normalized version of the given name (i.e. without any trailing white spaces).
+	 */
+	private String normalizeName(String name){
+		if(name == null){
+			throw new IllegalArgumentException("No null names please.");
+		}
+		name = name.trim();
+		if(nameToTrainCompany.containsKey(name)){
+			throw new IllegalArgumentException("The name'" + name + "' is already taken.");
+		}
+		return name;
+	}
+	
 	
 	/**
 	 * An example of how you can call a private constructor using Reflections.
