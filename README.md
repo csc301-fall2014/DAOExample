@@ -1,7 +1,7 @@
 # Data Access Object
 
 This repo is an example of the DAO (Data Access Object) design pattern in the context of Exercise 1.
-It is very similar to what we talked about in class on Sept 29.
+It is very similar to what we talked about in class during week 4.
 
 
 ## DAO
@@ -14,10 +14,9 @@ That is, we abstract the details of the underlying data storage, and define a un
 
 -----
 
-In class, I talked about in-memory vs. database DAO implementation.
+In class, I talked about in-memory vs. remote-database DAO implementation.
 In this example, I chose to implement something a little simpler:
- 1. In-memory DAO - Keeps everything in memory.    
-    _Note:_ This class is not fully implemented, because there is another section of the course that is still working on exercise 1.
+ 1. In-memory DAO - Keeps everything in memory.
  2. Local-file DAO - Data is saved/loaded to/from a local file.
 
 
